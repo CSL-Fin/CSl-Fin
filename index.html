@@ -1,216 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>CSL Risk-Based ROI Calculator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background: #f4f4f4;
-    }
-    h2 {
-      color: #333;
-    }
-    .form-group {
-      margin-bottom: 15px;
-    }
-    label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-    input, select {
-      width: 300px;
-      padding: 8px;
-    }
-    #result {
-      margin-top: 20px;
-      padding: 15px;
-      background: #fff;
-      border: 1px solid #ccc;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>CSL Risk-Based ROI Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f4f4f4;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input,
+        select {
+            width: 300px;
+            padding: 8px;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff;
+            border: 1px solid #ccc;
+        }
+    </style>
 </head>
+
 <body>
     <img src="https://static.wixstatic.com/media/eb7a97_ade82ad9713a44899cab4dd58b6a7325~mv2.jpg">
-  <img width="38px" src=" https://static.wixstatic.com/media/eb7a97_2a1bf0ad15f64b42b3b6727b8db7796d~mv2.jpg">
- <style>
-    body {background-image: url('https://static.wixstatic.com/media/eb7a97_71368c9ea82d4f9ca891a4480f4bfa56~mv2.jpg') }
-  </style>
-  <h2>CSL Risk Score & ROI Calculator</h2>
+    <img width="38px" src=" https://static.wixstatic.com/media/eb7a97_2a1bf0ad15f64b42b3b6727b8db7796d~mv2.jpg">
+    <style>
+        body {
+            background-image: url('https://static.wixstatic.com/media/eb7a97_71368c9ea82d4f9ca891a4480f4bfa56~mv2.jpg')
+        }
+    </style>
+    <h2>CSL Risk Score & ROI Calculator</h2>
 
-  <div id="form">
-    <div class="form-group">
-      <label>CIBIL Score</label>
-      <input type="number" id="cibil">
+    <div id="form">
+        <div class="form-group">
+            <label>CIBIL Score</label>
+            <input type="number" id="cibil">
+        </div>
+
+        <div class="form-group">
+            <label>No. of Running Loans</label>
+            <input type="number" id="loans">
+        </div>
+
+        <div class="form-group">
+            <label>Max DPD Bucket</label>
+            <select id="dpdBucket">
+                <option>Regular</option>
+                <option>1–30</option>
+                <option>31–60</option>
+                <option>61–90</option>
+                <option>90+</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>No. of DPD Instances in last 12 months</label>
+            <input type="number" id="dpdInstances">
+        </div>
+
+        <div class="form-group">
+            <label>Industry Type</label>
+            <select id="industry">
+                <option>Low Risk</option>
+                <option>Caution Profile</option>
+                <option>High Risk</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Distance from Branch (KM)</label>
+            <input type="number" id="distance">
+        </div>
+
+        <div class="form-group">
+            <label>FOIR (%)</label>
+            <input type="number" id="foir">
+        </div>
+
+        <div class="form-group">
+            <label>LTV (%)</label>
+            <input type="number" id="ltv">
+        </div>
+
+        <div class="form-group">
+            <label>Property Type</label>
+            <select id="property">
+                <option>Urban-MC Limit</option>
+                <option>Rural-MC Limit</option>
+                <option>Rural-Out of MC</option>
+                <option>Rural -Other than SORP/SOCP</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Net Worth / Total Loans</label>
+            <input type="number" step="0.01" id="networthLoans">
+        </div>
+
+
+        <button onclick="calculate()">Calculate Score & ROI</button>
+
+        <div id="result"></div>
     </div>
 
-    <div class="form-group">
-      <label>No. of Running Loans</label>
-      <input type="number" id="loans">
-    </div>
-
-    <div class="form-group">
-      <label>Max DPD Bucket</label>
-      <select id="dpdBucket">
-        <option>Regular</option>
-        <option>1–30</option>
-        <option>31–60</option>
-        <option>61–90</option>
-        <option>90+</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>No. of DPD Instances in last 12 months</label>
-      <input type="number" id="dpdInstances">
-    </div>
-
-    <div class="form-group">
-      <label>Industry Type</label>
-      <select id="industry">
-        <option>Low Risk</option>
-        <option>Caution Profile</option>
-        <option>High Risk</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Distance from Branch (KM)</label>
-      <input type="number" id="distance">
-    </div>
-
-    <div class="form-group">
-      <label>FOIR (%)</label>
-      <input type="number" id="foir">
-    </div>
-
-    <div class="form-group">
-      <label>LTV (%)</label>
-      <input type="number" id="ltv">
-    </div>
-
-    <div class="form-group">
-      <label>Property Type</label>
-      <select id="property">
-        <option>Urban-MC Limit</option>
-        <option>Rural-MC Limit</option>
-        <option>Rural-Out of MC</option>
-        <option>Rural -Other than SORP/SOCP</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Total Loan / Turnover</label>
-      <input type="number" step="0.01" id="loanTurnover">
-    </div>
-
-    <button onclick="calculate()">Calculate Score & ROI</button>
-
-    <div id="result"></div>
-  </div>
-
-  <script>
+    <script>
     function calculateScore() {
-      let score = 0;
+        let score = 0;
 
-      // CIBIL
-      const cibil = parseInt(document.getElementById("cibil").value);
-      if (cibil >= 750) score += 15;
-      else if (cibil >= 700) score += 12;
-      else if (cibil >= 600) score += 9;
-      else if (cibil >= 301) score += 6;
-      else score += 3;
+        // CIBIL
+        const cibil = parseInt(document.getElementById("cibil").value);
+        if (cibil >= 750) score += 15;
+        else if (cibil >= 700) score += 12;
+        else if (cibil >= 600) score += 9;
+        else if (cibil >= 301) score += 6;
+        else score += 3;
 
-      // Running Loans
-      const loans = parseInt(document.getElementById("loans").value);
-      if (loans <= 4) score += 10;
-      else if (loans <= 8) score += 8;
-      else if (loans <= 12) score += 6;
-      else if (loans <= 15) score += 4;
-      else score += 2;
+        // Running Loans
+        const loans = parseInt(document.getElementById("loans").value);
+        if (loans <= 4) score += 10;
+        else if (loans <= 8) score += 8;
+        else if (loans <= 12) score += 6;
+        else if (loans <= 15) score += 4;
+        else score += 2;
 
-      // DPD Bucket
-      const dpd = document.getElementById("dpdBucket").value;
-      const dpdScores = { "Regular": 15, "1–30": 12, "31–60": 9, "61–90": 6, "90+": 3 };
-      score += dpdScores[dpd];
+        // DPD Bucket
+        const dpd = document.getElementById("dpdBucket").value;
+        const dpdScores = { "Regular": 15, "1–30": 12, "31–60": 9, "61–90": 6, "90+": 3 };
+        score += dpdScores[dpd];
 
-      // DPD Instances
-      const dpdInst = parseInt(document.getElementById("dpdInstances").value);
-      if (dpdInst === 0) score += 15;
-      else if (dpdInst <= 3) score += 11;
-      else if (dpdInst <= 6) score += 7;
-      else if (dpdInst <= 12) score += 3;
+        // DPD Instances
+        const dpdInst = parseInt(document.getElementById("dpdInstances").value);
+        if (dpdInst === 0) score += 15;
+        else if (dpdInst <= 3) score += 11;
+        else if (dpdInst <= 6) score += 7;
+        else if (dpdInst <= 12) score += 3;
 
-      // Industry
-      const industry = document.getElementById("industry").value;
-      const industryScores = { "Low Risk": 5, "Caution Profile": 3, "High Risk": 1 };
-      score += industryScores[industry];
+        // Industry
+        const industry = document.getElementById("industry").value;
+        const industryScores = { "Low Risk": 5, "Caution Profile": 3, "High Risk": 1 };
+        score += industryScores[industry];
 
-      // Distance
-      const distance = parseFloat(document.getElementById("distance").value);
-      if (distance <= 20) score += 5;
-      else if (distance <= 30) score += 4;
-      else if (distance <= 40) score += 3;
-      else if (distance <= 50) score += 2;
-      else score += 1;
+        // Distance
+        const distance = parseFloat(document.getElementById("distance").value);
+        if (distance <= 20) score += 5;
+        else if (distance <= 30) score += 4;
+        else if (distance <= 40) score += 3;
+        else if (distance <= 50) score += 2;
+        else score += 1;
 
-      // FOIR
-      const foir = parseFloat(document.getElementById("foir").value);
-      if (foir <= 40) score += 10;
-      else if (foir <= 50) score += 8;
-      else if (foir <= 60) score += 6;
-      else if (foir <= 65) score += 4;
-      else score += 2;
+        // FOIR
+        const foir = parseFloat(document.getElementById("foir").value);
+        if (foir <= 40) score += 10;
+        else if (foir <= 50) score += 8;
+        else if (foir <= 60) score += 6;
+        else if (foir <= 65) score += 4;
+        else score += 2;
 
-      // LTV
-      const ltv = parseFloat(document.getElementById("ltv").value);
-      if (ltv < 20) score += 15;
-      else if (ltv <= 40) score += 12;
-      else if (ltv <= 50) score += 9;
-      else if (ltv <= 60) score += 6;
-      else score += 3;
+        // LTV
+        const ltv = parseFloat(document.getElementById("ltv").value);
+        if (ltv < 20) score += 15;
+        else if (ltv <= 40) score += 12;
+        else if (ltv <= 50) score += 9;
+        else if (ltv <= 60) score += 6;
+        else score += 3;
 
-      // Property
-      const property = document.getElementById("property").value;
-      const propertyScores = {
-        "Urban-MC Limit": 5,
-        "Rural-MC Limit": 4,
-        "Rural-Out of MC": 3,
-        "Rural -Other than SORP/SOCP": 2
-      };
-      score += propertyScores[property];
+        // Property
+        const property = document.getElementById("property").value;
+        const propertyScores = {
+            "Urban-MC Limit": 5,
+            "Rural-MC Limit": 4,
+            "Rural-Out of MC": 3,
+            "Rural -Other than SORP/SOCP": 2
+        };
+        score += propertyScores[property];
 
-      // Loan/Turnover
-      const loanTurnover = parseFloat(document.getElementById("loanTurnover").value);
-      if (loanTurnover <= 0.4) score += 5;
-      else if (loanTurnover <= 0.6) score += 4;
-      else if (loanTurnover <= 0.8) score += 3;
-      else if (loanTurnover <= 1.0) score += 2;
-      else score += 1;
+        // Net Worth / Total Loans
+        const networthLoans = parseFloat(document.getElementById("networthLoans").value);
+        if (networthLoans >= 2) score += 5;
+        else if (networthLoans >= 1) score += 3;
+        else if (networthLoans >= 0.5) score += 1;
 
-      return score;
+        return score;
     }
 
     function getROI(score) {
-      if (score > 90) return { band: "Very Low Risk", roi: "14%" };
-      else if (score > 80) return { band: "Low Risk", roi: "15%" };
-      else if (score > 70) return { band: "Moderate Risk", roi: "16%" };
-      else if (score > 60) return { band: "High Risk", roi: "17%" };
-      else return { band: "Very High Risk", roi: "18%" };
+        if (score > 90) return { band: "Very Low Risk", roi: "14%" };
+        else if (score > 80) return { band: "Low Risk", roi: "15%" };
+        else if (score > 70) return { band: "Moderate Risk", roi: "16%" };
+        else if (score > 60) return { band: "High Risk", roi: "17%" };
+        else return { band: "Very High Risk", roi: "18%" };
     }
 
     function calculate() {
-      const score = calculateScore();
-      const { band, roi } = getROI(score);
+        const score = calculateScore();
+        const { band, roi } = getROI(score);
 
-      document.getElementById("result").innerHTML = `
-        <strong>Total Risk Score:</strong> ${score}<br>
-        <strong>Risk Band:</strong> ${band}<br>
-        <strong>Suggested ROI:</strong> ${roi}
-      `;
+        document.getElementById("result").innerHTML = `
+            <strong>Total Risk Score:</strong> ${score}<br>
+            <strong>Risk Band:</strong> ${band}<br>
+            <strong>Suggested ROI:</strong> ${roi}
+        `;
     }
-  </script>
+</script>
+
 </body>
+
 </html>

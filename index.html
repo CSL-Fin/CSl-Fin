@@ -209,11 +209,11 @@
     }
 
     function getROI(score) {
-        if (score > 90) return { band: "Prime-1", roi: "14%" };
-        else if (score > 80) return { band: "Prime-2", roi: "15%" };
-        else if (score > 70) return { band: "Prime-3", roi: "16%" };
-        else if (score > 60) return { band: "Prime-4", roi: "17%" };
-        else return { band: "Prime-5", roi: "18%" };
+        if (score > 90) return { band: "Low Risk", roi: "14%" };
+        else if (score > 80) return { band: "Low Risk", roi: "15%" };
+        else if (score > 70) return { band: "Moderate Risk", roi: "16%" };
+        else if (score > 60) return { band: "High Risk", roi: "17%" };
+        else return { band: "High Risk", roi: "18%" };
     }
 
     function calculate() {
@@ -229,6 +229,19 @@
     
     
 </script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<button onclick="captureSnapshot()">Download Snapshot</button>
+<script>
+    function captureSnapshot() {
+        html2canvas(document.body).then(canvas => {
+            const link = document.createElement('a');
+            link.download = 'csl_roi_snapshot.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+    }
+</script>
+
 
 
 

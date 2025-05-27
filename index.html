@@ -209,11 +209,11 @@
     }
 
     function getROI(score) {
-        if (score > 90) return { band: "Low Risk", roi: "14%" };
-        else if (score > 80) return { band: "Low Risk", roi: "15%" };
-        else if (score > 70) return { band: "Moderate Risk", roi: "16%" };
-        else if (score > 60) return { band: "High Risk", roi: "17%" };
-        else return { band: "High Risk", roi: "18%" };
+        if (score > 90) return { band: "Prime1", roi: "14%" };
+        else if (score > 80) return { band: "Prime2", roi: "15%" };
+        else if (score > 70) return { band: "Prime3", roi: "16%" };
+        else if (score > 60) return { band: "Prime4", roi: "17%" };
+        else return { band: "Prime5", roi: "18%" };
     }
 
     function calculate() {
